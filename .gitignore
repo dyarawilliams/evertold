@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local data. Directory placeholders stay in git; recordings and exports do not.
+data/*
+!data/audio/
+!data/exports/
+data/audio/*
+!data/audio/.gitkeep
+data/exports/*
+!data/exports/.gitkeep
+
+# SQLite
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# Netlify local state
+.netlify
+
+# OS and editor files
+.DS_Store
