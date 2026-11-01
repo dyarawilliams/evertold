@@ -80,3 +80,10 @@ For each feature:
 4. Run relevant tests.
 5. Explain how to verify the result.
 6. Report any outstanding issues.
+
+## Cursor Cloud specific instructions
+
+Follow the setup and development commands in the README. Two details are easy to miss:
+
+- `npm run dev` starts transcription with `.venv/bin/python`. On Ubuntu, install `python3.12-venv` when `python3 -m venv` reports that ensurepip is missing, then create `.venv` and run `.venv/bin/pip install -e "services/transcription[dev]"`.
+- Copy `.env.example` to `.env`. The web app, API, and transcription service listen on `127.0.0.1` (ports 5173, 3001, and 8000). faster-whisper and Ollama are optional. When they are down, the dashboard says so, and the synthetic demo is the local story to open and save.
