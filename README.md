@@ -2,7 +2,7 @@
 
 Every story deserves to live on.
 
-EverTold is an open-source platform for preserving family oral histories. This repository is the foundation: a React app, an Express API with SQLite, and a Python transcription service. Recording, transcription, and story organization are not implemented yet.
+EverTold is an open-source platform for preserving family oral histories. Record a story, upload audio, or type a transcript. Whisper can transcribe a recording, and Gemma can suggest a summary, people, places, moments, and topics. The original transcript stays beside those insights. Saved memories appear in the library.
 
 ## Layout
 
@@ -17,7 +17,7 @@ EverTold is an open-source platform for preserving family oral histories. This r
 | `data/audio` | Local recordings. Not committed. |
 | `data/exports` | Local archive exports. Not committed. |
 | `docs` | Project documentation |
-| `tests` | Foundation checks for the API, browser database, and transcription service |
+| `tests` | Checks for the API, browser database, routes, and transcription service |
 
 npm workspaces cover `apps/web` and `apps/api`. The transcription service stays a Python project.
 
@@ -26,7 +26,7 @@ npm workspaces cover `apps/web` and `apps/api`. The transcription service stays 
 - Node.js 22 or newer
 - Python 3.11 or newer
 
-Ollama and faster-whisper are not required to run this foundation.
+Ollama and faster-whisper are optional. If they are not running, EverTold says so. It does not invent a transcript or insights. A labeled synthetic demo story is available instead.
 
 ## Setup
 
@@ -48,7 +48,9 @@ npm run dev
 - API health through the web proxy: http://127.0.0.1:5173/api/health
 - Transcription health: http://127.0.0.1:8000/health
 
-The Vite dev server proxies `/api` to the Express server. Express does not call the transcription service yet. `TRANSCRIPTION_URL` is reserved for that later work.
+The Vite dev server proxies `/api` to the Express server. Express calls the transcription service when you ask to transcribe a recording, and it calls Ollama when you ask for insights.
+
+Open the dashboard, record or upload with consent, or write a transcript. Review the original words beside any insights, then save the memory and find it in the library. Export and delete are on the story page. Audio files stay in `data/audio` and are not committed.
 
 Run one process with `npm run dev:web`, `npm run dev:api`, or `npm run dev:transcription`.
 
@@ -71,11 +73,11 @@ Environment variables are listed in `.env.example`. Copy it to `.env`. `.env` is
 - Whisper defaults come from `ai/transcription/model.json` unless `WHISPER_MODEL`, `WHISPER_DEVICE`, or `WHISPER_COMPUTE_TYPE` is set.
 - Health responses do not include filesystem paths.
 
-The browser database is Dexie, named `evertold`, and defined in `apps/web/src/db/index.ts`. It has no tables yet.
+The browser database is Dexie, named `evertold`, and defined in `apps/web/src/db/index.ts`. It keeps a copy of stories and any recording that has not reached the API yet.
 
 ## Whisper
 
-Speech-to-text is not wired up. The dependency is optional so setup does not download the Whisper runtime before that feature exists:
+The transcription service exposes `POST /transcribe`. faster-whisper stays optional so setup does not download the model until you want local transcription:
 
 ```bash
 .venv/bin/pip install -e "services/transcription[whisper]"
