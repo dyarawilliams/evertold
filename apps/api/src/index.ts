@@ -1,10 +1,15 @@
+import path from "node:path";
 import { createApp } from "./app.js";
 import { openDatabase } from "./db/sqlite.js";
 import { loadEnvironment } from "./env.js";
 
 const env = loadEnvironment();
 const database = openDatabase(env.databasePath);
-const app = createApp({ env, database });
+const app = createApp({
+  env,
+  database,
+  audioDir: path.join(env.repoRoot, "data", "audio"),
+});
 
 const server = app.listen(env.API_PORT, env.API_HOST, () => {
   console.log(`API listening on http://${env.API_HOST}:${env.API_PORT}`);
