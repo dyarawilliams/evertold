@@ -1,20 +1,78 @@
+import { useEffect } from "react";
+import { AppLink, RouterProvider, useRouter } from "./components/Router.tsx";
+import { Shell } from "./components/Shell.tsx";
+import type { Route } from "./lib/routes.ts";
+import { Dashboard } from "./pages/Dashboard.tsx";
+import { LibraryPage } from "./pages/LibraryPage.tsx";
+import { RecordPage } from "./pages/RecordPage.tsx";
+import { StoryPage } from "./pages/StoryPage.tsx";
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-ivory text-charcoal">
-      <header className="border-b-4 border-terracotta">
-        <div className="mx-auto flex w-full max-w-5xl items-baseline px-6 py-5">
-          <p className="font-serif text-2xl tracking-tight">EverTold</p>
-        </div>
-      </header>
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-16">
-        <h1 className="max-w-3xl font-serif text-4xl leading-tight sm:text-5xl">
-          Every story deserves to live on.
-        </h1>
-        <p className="max-w-2xl border-l-4 border-sage pl-4 text-lg leading-relaxed">
-          The EverTold foundation is in place. Recording, transcription, and
-          story organization are not available yet.
-        </p>
-      </main>
+    <RouterProvider>
+      <RoutedApp />
+    </RouterProvider>
+  );
+}
+
+function RoutedApp() {
+  const { route } = useRouter();
+  useEffect(() => {
+    document.title = titleFor(route);
+  }, [route]);
+
+  return (
+    <Shell current={route.name}>
+      <Page route={route} />
+    </Shell>
+  );
+}
+
+function Page({ route }: { route: Route }) {
+  switch (route.name) {
+    case "dashboard":
+      return <Dashboard />;
+    case "record":
+      return <RecordPage mode={route.mode} />;
+    case "library":
+      return <LibraryPage />;
+    case "story":
+      return <StoryPage id={route.id} />;
+    case "not-found":
+      return <MissingPage />;
+    default: {
+      const neverRoute: never = route;
+      return neverRoute;
+    }
+  }
+}
+
+function MissingPage() {
+  return (
+    <div className="paper flex flex-col items-start gap-4 p-8">
+      <h1 className="font-serif text-4xl">That page is not part of EverTold</h1>
+      <AppLink className="btn" href="/">
+        Back to the dashboard
+      </AppLink>
     </div>
   );
+}
+
+function titleFor(route: Route): string {
+  switch (route.name) {
+    case "dashboard":
+      return "EverTold";
+    case "record":
+      return "Record a story · EverTold";
+    case "library":
+      return "Library · EverTold";
+    case "story":
+      return "Story · EverTold";
+    case "not-found":
+      return "Not found · EverTold";
+    default: {
+      const neverRoute: never = route;
+      return neverRoute;
+    }
+  }
 }

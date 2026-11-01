@@ -16,7 +16,7 @@ def test_health_reports_the_transcription_service() -> None:
 
 def test_unknown_route_is_not_found() -> None:
     client = TestClient(create_app(Settings(_env_file=None)))
-    response = client.get("/transcribe")
+    response = client.get("/missing")
 
     assert response.status_code == 404
 
