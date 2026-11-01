@@ -12,7 +12,6 @@ export function LibraryPage() {
   const [offline, setOffline] = useState(false);
 
   useEffect(() => {
-    document.getElementById("page-title")?.focus();
     let cancelled = false;
     void listStories(true).then(async (result) => {
       if (cancelled) {

@@ -73,10 +73,6 @@ export function StoryPage({ id }: { id: string }) {
     };
   }, [id]);
 
-  useEffect(() => {
-    document.getElementById("page-title")?.focus();
-  }, [id]);
-
   async function save(): Promise<void> {
     if (!story) {
       return;

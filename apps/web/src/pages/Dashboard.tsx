@@ -17,11 +17,6 @@ export function Dashboard() {
   const [demoPending, setDemoPending] = useState(false);
 
   useEffect(() => {
-    const title = document.getElementById("page-title");
-    title?.focus();
-  }, []);
-
-  useEffect(() => {
     let cancelled = false;
     void getStatus().then((result) => {
       if (cancelled) {

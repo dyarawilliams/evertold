@@ -8,12 +8,19 @@ type RouterValue = {
 
 const RouterContext = createContext<RouterValue | null>(null);
 
+function focusPageTitle(): void {
+  window.requestAnimationFrame(() => {
+    document.getElementById("page-title")?.focus();
+  });
+}
+
 export function RouterProvider({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState<Route>(() => parseRoute(window.location.pathname, window.location.search));
 
   useEffect(() => {
     const onPop = () => {
       setRoute(parseRoute(window.location.pathname, window.location.search));
+      focusPageTitle();
     };
     window.addEventListener("popstate", onPop);
     return () => {
@@ -29,6 +36,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
       window.history.pushState(null, "", next);
     }
     setRoute(parseRoute(url.pathname, url.search));
+    focusPageTitle();
   }, []);
 
   return <RouterContext.Provider value={{ route, navigate }}>{children}</RouterContext.Provider>;

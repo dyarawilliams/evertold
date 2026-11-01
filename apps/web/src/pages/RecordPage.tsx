@@ -21,10 +21,6 @@ export function RecordPage({ mode }: { mode: RecordMode }) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    document.getElementById("page-title")?.focus();
-  }, [mode]);
-
-  useEffect(() => {
     void loadPending(setPending);
   }, []);
 
