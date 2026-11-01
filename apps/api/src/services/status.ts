@@ -11,9 +11,13 @@ export async function readServiceStatus(options: {
   ollamaModel: string | null;
   fetchImpl: FetchLike;
 }): Promise<ServiceStatus> {
-  const [transcriptionUp, gemmaUp] = await Promise.all([
-    options.transcriptionUrl
-      ? probe(joinUrl(options.transcriptionUrl, "/health"), options.fetchImpl)
+  const transcriptionUrl = options.transcriptionUrl;
+  const [transcriptionHealth, transcriptionReady, gemmaUp] = await Promise.all([
+    transcriptionUrl
+      ? probe(joinUrl(transcriptionUrl, "/health"), options.fetchImpl)
+      : Promise.resolve(false),
+    transcriptionUrl
+      ? probe(joinUrl(transcriptionUrl, "/ready"), options.fetchImpl)
       : Promise.resolve(false),
     options.ollamaBaseUrl
       ? probe(joinUrl(options.ollamaBaseUrl, "/api/tags"), options.fetchImpl)
@@ -23,10 +27,8 @@ export async function readServiceStatus(options: {
   const model = options.ollamaModel;
   return {
     transcription: {
-      available: transcriptionUp,
-      message: transcriptionUp
-        ? "Whisper is reachable on this computer."
-        : "Whisper is not running on this computer. You can type a transcript or load the synthetic demo. The demo is not a transcription.",
+      available: transcriptionReady,
+      message: transcriptionMessage(transcriptionHealth, transcriptionReady),
     },
     gemma: {
       available: gemmaUp,
@@ -38,6 +40,16 @@ export async function readServiceStatus(options: {
         : "Gemma is not running through Ollama. EverTold will not invent insights. The synthetic demo is labeled and is not model output.",
     },
   };
+}
+
+function transcriptionMessage(health: boolean, ready: boolean): string {
+  if (ready) {
+    return "Whisper is reachable on this computer.";
+  }
+  if (health) {
+    return "The transcription service is running, but faster-whisper is not installed. You can type a transcript. No transcript will be invented.";
+  }
+  return "Whisper is not running on this computer. You can type a transcript or load the synthetic demo. The demo is not a transcription.";
 }
 
 async function probe(url: string, fetchImpl: FetchLike): Promise<boolean> {

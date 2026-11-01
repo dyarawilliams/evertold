@@ -62,6 +62,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def health() -> HealthResponse:
         return HealthResponse(status="ok", service="transcription")
 
+    @app.get("/ready", response_model=None)
+    def ready() -> HealthResponse | JSONResponse:
+        try:
+            # Imported here so startup and /health do not load the Whisper runtime.
+            import faster_whisper as _faster_whisper
+        except ImportError:
+            _faster_whisper = None
+        if _faster_whisper is None:
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "error": "whisper_unavailable",
+                    "message": "faster-whisper is not installed. No transcript was created.",
+                },
+            )
+        return HealthResponse(status="ok", service="transcription")
+
     @app.post("/transcribe", response_model=None)
     async def transcribe(request: Request) -> TranscriptResponse | JSONResponse:
         mime = (request.headers.get("content-type") or "").split(";", 1)[0].strip().lower()
