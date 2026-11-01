@@ -31,7 +31,10 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, next) => {
   }
 
   if (isJsonParseError(error)) {
-    res.status(400).json({ error: "invalid_json" });
+    res.status(400).json({
+      error: "invalid_json",
+      message: "The request body was not valid JSON.",
+    });
     return;
   }
 
@@ -41,5 +44,8 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, next) => {
   }
 
   console.error(error);
-  res.status(500).json({ error: "internal_error" });
+  res.status(500).json({
+    error: "internal_error",
+    message: "The API could not finish that request.",
+  });
 };
