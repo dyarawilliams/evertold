@@ -1,0 +1,11 @@
+{
+  "provider": "ollama",
+  "model": "gemma3",
+  "baseUrlEnv": "OLLAMA_BASE_URL",
+  "rules": [
+    "Analyze transcripts only.",
+    "Never invent names, dates, relationships, locations, or historical events.",
+    "Keep the speaker's words distinct from generated text.",
+    "Link each insight to a supporting transcript excerpt."
+  ]
+}
