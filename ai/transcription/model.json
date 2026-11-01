@@ -1,0 +1,6 @@
+{
+  "provider": "faster-whisper",
+  "model": "base",
+  "device": "cpu",
+  "computeType": "int8"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "evertold",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Open-source, AI-powered family oral history preservation.",
+  "license": "MIT",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail -n web,api,transcription \"npm run dev:web\" \"npm run dev:api\" \"npm run dev:transcription\"",
+    "dev:web": "npm run dev -w @evertold/web",
+    "dev:api": "npm run dev -w @evertold/api",
+    "dev:transcription": "PYTHONPATH=services/transcription .venv/bin/python services/transcription/dev.py",
+    "build": "npm run build -w @evertold/web && npm run build -w @evertold/api",
+    "typecheck": "npm run typecheck -w @evertold/web && npm run typecheck -w @evertold/api && tsc -p tsconfig.tests.json --noEmit",
+    "test": "tsx --test tests/api/*.test.ts tests/web/*.test.ts && .venv/bin/python -m pytest tests/transcription -q"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "concurrently": "^10.0.6",
+    "tsx": "^4.23.15",
+    "typescript": "~7.0.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
