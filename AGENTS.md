@@ -1,66 +1,82 @@
-# EverTold — Project Instructions
+# EverTold — AI Development Instructions
 
-## Project Identity
-**Name:** EverTold  
-**Tagline:** Every story deserves to live on.
+## Project Overview
+EverTold is an open-source, AI-powered family oral history preservation platform.
 
-EverTold is an open-source, AI-powered family oral history preservation platform. It helps families record conversations, transcribe stories, organize memories, and preserve family histories.
+Tagline: Every story deserves to live on.
+
+The application allows families to record, transcribe, organize, search, and preserve personal stories.
 
 ## Technology Stack
-- Frontend: React, Vite, Tailwind CSS v4
-- Backend: Node.js, Express
-- Database: SQLite with better-sqlite3
-- Browser storage: IndexedDB with Dexie
-- Speech recognition: Whisper using faster-whisper
-- Language model: Gemma through Ollama
-- Transcription API: Python FastAPI
-- Validation: Zod
+- React
+- Vite
+- Tailwind CSS v4
+- Node.js
+- Express
+- SQLite
+- Dexie / IndexedDB
+- Python
+- FastAPI
+- faster-whisper
+- Gemma
+- Ollama
 
 ## Architecture
-Maintain separate frontend, backend, and AI transcription services.
+Maintain a modular monorepo:
 
-- `apps/web`: React frontend
-- `apps/api`: Express backend
-- `services/transcription`: Python Whisper service
-- `ai`: AI prompts and model-related configuration
-- `docs`: Technical and project documentation
+- apps/web: React frontend
+- apps/api: Express backend
+- services/transcription: Python transcription service
+- ai: AI prompts and configurations
+- docs: Project documentation
+- data: Local application data
 
-## Design Guidelines
-Use a warm, nostalgic, editorial visual identity.
+## Visual Identity
+Use a warm, nostalgic, editorial design.
 
-Colors:
 - Ivory: #F8F5EF
 - Sage: #8C9B83
 - Terracotta: #B87558
 - Charcoal: #30332F
 
-Use elegant serif headings, readable sans-serif body text, accessible contrast, responsive layouts, and consistent spacing.
+Use serif headings and sans-serif body typography.
 
-## AI Guidelines
-- Whisper handles speech-to-text transcription.
-- Gemma analyzes transcripts and generates summaries and structured insights.
-- Never invent names, dates, relationships, locations, or historical events.
-- Clearly distinguish original testimony from AI-generated content.
-- Allow users to review, edit, and approve AI-generated insights.
-- Link generated insights to their supporting transcript excerpts.
+Design for desktop, tablet, and mobile.
 
-## Privacy and Security
-- Obtain consent before recording people.
-- Keep original recordings intact unless the user requests deletion.
-- Do not expose server filesystem paths to the frontend.
-- Never commit private recordings, transcripts, or environment files.
-- Provide deletion and archive export capabilities.
-- Use fictional or synthetic stories in public demonstrations.
+Prioritize accessibility, responsive layouts, and clear navigation.
 
-## Development Standards
-- Write modular, reusable code.
-- Use clear naming conventions.
-- Validate API inputs.
-- Handle loading, error, and empty states.
-- Follow accessibility best practices.
-- Add tests for important functionality.
-- Avoid unnecessary dependencies.
-- Explain significant architectural decisions.
+## AI Behavior
+- Whisper handles speech transcription.
+- Gemma analyzes transcripts.
+- Never invent historical facts.
+- Preserve the original transcript.
+- Clearly identify AI-generated content.
+- Allow users to edit and approve AI-generated insights.
+- Connect generated insights to supporting transcript excerpts.
+- Represent uncertain information as unknown rather than guessing.
 
-## Development Approach
-Build and test one complete feature at a time. Before modifying existing architecture, inspect the relevant files and explain the proposed changes. Do not replace working implementations without a clear reason.
+## Privacy
+- Obtain consent before recording.
+- Do not expose private audio or transcripts.
+- Never commit recordings, personal archives, or .env files.
+- Provide deletion and export functionality.
+- Use synthetic data in public demonstrations.
+
+## Development Rules
+- Inspect existing files before editing.
+- Do not rebuild working functionality unnecessarily.
+- Build one feature at a time.
+- Use reusable components and modular services.
+- Validate API requests.
+- Handle errors and loading states.
+- Write tests for important functionality.
+- Explain significant changes before implementing them.
+
+## Development Workflow
+For each feature:
+1. Explain the implementation plan.
+2. Identify the files that need changes.
+3. Implement the feature.
+4. Run relevant tests.
+5. Explain how to verify the result.
+6. Report any outstanding issues.
