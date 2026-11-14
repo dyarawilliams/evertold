@@ -68,7 +68,10 @@ export function createApp(options: CreateAppOptions): Express {
   app.use(mediaRouter);
   app.use(insightsRouter);
   app.use((_req, res) => {
-    res.status(404).json({ error: "not_found" });
+    res.status(404).json({
+      error: "not_found",
+      message: "No API route matched this request.",
+    });
   });
   app.use(errorHandler);
   return app;
