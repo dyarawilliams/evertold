@@ -14,14 +14,19 @@
     "dev:api": "npm run dev -w @evertold/api",
     "dev:transcription": "PYTHONPATH=services/transcription .venv/bin/python services/transcription/dev.py",
     "build": "npm run build -w @evertold/web && npm run build -w @evertold/api",
+    "lint": "eslint .",
     "typecheck": "npm run typecheck -w @evertold/web && npm run typecheck -w @evertold/api && tsc -p tsconfig.tests.json --noEmit",
     "test": "tsx --test tests/api/*.test.ts tests/web/*.test.ts && .venv/bin/python -m pytest tests/transcription -q"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.19.0",
+    "@typescript/native": "npm:typescript@~7.0.2",
     "concurrently": "^10.0.6",
+    "eslint": "^10.15.0",
     "tsx": "^4.23.15",
-    "typescript": "~7.0.2"
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.72.2"
   },
   "engines": {
     "node": ">=22"
